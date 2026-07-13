@@ -140,7 +140,7 @@ It is very unlikely that you will get the perfect prompt in first try. Use itera
 It is a process of extracting , identifying information from a text.
 
 Example 1 (Sentiment):
-Prompt: 
+Prompt:zero-shot and few-shot prompts 
 ```
 "Classify the sentiment of this review: 'The phone's battery is amazing, but the camera is disappointing.'"
 ```
@@ -152,3 +152,10 @@ Prompt:
 "Extract the person's name, company, and job title from: 'Sarah Ahmed joined OpenAI as a Research Engineer in 2025.'"
 ```
 Output: { "name": "Sarah Ahmed", "company": "OpenAI", "job_title": "Research Engineer" }
+
+
+## Zero-shot Prompt
+A prompt where we don't give any example and model relies on it's existin knowledge to complete the task.
+
+## Few-shot Prompt
+A prompt where we give some examples to model, which makes model better understand what kind of output we want.
