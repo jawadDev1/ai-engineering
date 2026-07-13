@@ -132,3 +132,23 @@ prompt = """
 Summarize the main findings of the paper "Quantum Trees for Neural Reasoning" by John Smith and Alice Doe, published in Nature in 2024. Include three direct quotes.
 """
 ```
+
+## Iterative Prompt Development
+It is very unlikely that you will get the perfect prompt in first try. Use iterative approach, try 1st prompt, improve it then try again , keep trying until you get the results you want.
+
+## Inferring
+It is a process of extracting , identifying information from a text.
+
+Example 1 (Sentiment):
+Prompt: 
+```
+"Classify the sentiment of this review: 'The phone's battery is amazing, but the camera is disappointing.'"
+```
+Output: "Mixed (positive about battery, negative about camera)."
+
+Example 2 (Information Extraction):
+Prompt: 
+```
+"Extract the person's name, company, and job title from: 'Sarah Ahmed joined OpenAI as a Research Engineer in 2025.'"
+```
+Output: { "name": "Sarah Ahmed", "company": "OpenAI", "job_title": "Research Engineer" }
