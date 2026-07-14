@@ -23,6 +23,7 @@ Mapped Numbers - Tokens for machine:
 
 It maps to numbers because it easier for computer to understand and process
 
+
 Each model has a vocabulary size, voc size decide how big or complex a token can be for example for some model Hey can be a single token and for some H a toke, E a token and Y a token.
 
 ### Vector Embeddings
