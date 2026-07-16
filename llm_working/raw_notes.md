@@ -24,7 +24,7 @@ the model will continue the patter and translate love to korean.
 The tokens are in one dimenssional sequence.
 
 ### Model needs token to think
-Each token goes through a finite neural network of computations. Now if you ask model to return the answer in one token, it will most likely be incorrect. but if you allow the model to use many tokens, it will in iterative reasoning approach, go step by step as trained by human lablers, and there is maximum chance of getting a correct answer.
+Each token goes through a finite neural network of computations. Now if you ask model to return the answer in one token, it will most likely be incorrect. but if you allow the model to use many tokens, it will in iterative reasoning approach, go step by step as trained , and there is maximum chance of getting a correct answer.
 The models are not good at couting, so if i give the model this prompt
 ```
 how many dots are below
