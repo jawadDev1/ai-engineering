@@ -12,8 +12,7 @@ Deliverable
 A deployed or runnable RAG app that answers questions over a custom document set — GitHub repo with README
 
 Links:
-    Learn rag from scratch: https://www.youtube.com/watch?v=sVcwVQRHIc8&t=8033s
-    How to build scaleable rag system: https://www.youtube.com/watch?v=4KiiKQ9RVvA
-    Getting Started with RAG Pipeline Using LangChain, ChromaDB, and FAISS: https://www.youtube.com/watch?v=9Thc6hRw2Gs
+    RAG Detailed DeepLearning course: https://learn.deeplearning.ai/courses/retrieval-augmented-generation/lesson/rrngb/a-conversation-with-andrew-ng
+    RAG Crash Course: https://www.youtube.com/watch?v=o126p1QN_RI
 
 """
