@@ -3,3 +3,8 @@ langchain-core
 langchain-community
 pypdf
 pymupdf
+langchain_excel_loader
+langchain_text_splitters
+sentence-transformers
+faiss-cpu
+chromadb
