@@ -1,4 +1,5 @@
 import os
+import time
 import uuid  # every record in vector db will have an id
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
@@ -8,11 +9,17 @@ import chromadb
 # for Embedding & Vector db
 import numpy as np
 from chromadb.config import Settings
+from dotenv import load_dotenv
 from langchain_community.document_loaders import PyMuPDFLoader, PyPDFLoader
 from langchain_core.documents import Document
+
+# GROQ LLM
+from langchain_groq import ChatGroq
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from sentence_transformers import SentenceTransformer  # embedding model
 from sklearn.metrics.pairwise import cosine_similarity
+
+load_dotenv()
 
 # Data Ingession to Vector DB Pipeline
 
@@ -297,6 +304,164 @@ class RAGRetriever:
             return []
 
 
+# Initialize the Groq LLM
+groq_api_key = os.getenv("GROQ_API_KEY")
+
+
+def rag_simple(query, retriever, llm, top_k=3):
+    # Retrive the context
+    results = retriever.retrieve(query, top_k)
+
+    context = "\n\n".join([doc["content"] for doc in results]) if results else ""
+
+    if not context:
+        return "no relevent context found"
+
+    # Generate the answer
+    prompt = f"""
+    Use the following context in ``` delimeters, to answer the question concisely.
+    Context: ```{context}```
+
+    Question: {query}
+
+    Answer:
+    """
+
+    res = llm.invoke([prompt.format(context=context, query=query)])
+    return res.content
+
+
+def rag_advanced(query, retriever, llm, top_k=5, min_score=0.2, return_context=False):
+    """
+    RAG pipeline with extra features:
+        - Returns answer, sources, confidence score, and optionally full context
+    """
+    results = retriever.retrieve(query, top_k, score_threshold=min_score)
+
+    if not results:
+        return {
+            "answer": "No relavent context found",
+            "sources": [],
+            "confidence": 0.0,
+            "context": "",
+        }
+
+    # Prepare context and sources
+    context = "\n\n".join([doc["content"] for doc in results])
+    sources = [
+        {
+            "source": doc["metadata"].get(
+                "source_file", doc["metadata"].get("source", "unknown")
+            ),
+            "page": doc["metadata"].get("page", "unknown"),
+            "score": doc["similarity_score"],
+            "preview": doc["content"][:300] + "...",
+        }
+        for doc in results
+    ]
+
+    confidence = max([doc["similarity_score"] for doc in results])
+
+    prompt = f"""
+    Use the following context in ``` delimeters, to answer the question concisely.
+    Context: ```{context}```
+
+    Question: {query}
+
+    Answer:
+    """
+    res = llm.invoke([prompt.format(context=context, query=query)])
+    output = {"answer": res.content, "sources": sources, "confidence": confidence}
+
+    if return_context:
+        output["context"] = context
+
+    return output
+
+
+class AdvancedRAGPipeline:
+    def __init__(self, retriever, llm):
+        self.retriever = retriever
+        self.llm = llm
+        self.history = []  # Store query history
+
+    def query(
+        self,
+        question: str,
+        top_k: int = 5,
+        min_score: float = 0.2,
+        stream: bool = False,
+        summarize: bool = False,
+    ) -> Dict[str, Any]:
+        # Retrieve relevant documents
+        results = self.retriever.retrieve(
+            question, top_k=top_k, score_threshold=min_score
+        )
+        if not results:
+            answer = "No relevant context found."
+            sources = []
+            context = ""
+        else:
+            context = "\n\n".join([doc["content"] for doc in results])
+            sources = [
+                {
+                    "source": doc["metadata"].get(
+                        "source_file", doc["metadata"].get("source", "unknown")
+                    ),
+                    "page": doc["metadata"].get("page", "unknown"),
+                    "score": doc["similarity_score"],
+                    "preview": doc["content"][:120] + "...",
+                }
+                for doc in results
+            ]
+            # Streaming answer simulation
+            prompt = f"""Use the following context to answer the question concisely.\nContext:\n{context}\n\nQuestion: {question}\n\nAnswer:"""
+            if stream:
+                print("Streaming answer:")
+                for i in range(0, len(prompt), 80):
+                    print(prompt[i : i + 80], end="", flush=True)
+                    time.sleep(0.05)
+                print()
+            response = self.llm.invoke(
+                [prompt.format(context=context, question=question)]
+            )
+            answer = response.content
+
+        # Add citations to answer
+        citations = [
+            f"[{i + 1}] {src['source']} (page {src['page']})"
+            for i, src in enumerate(sources)
+        ]
+        answer_with_citations = (
+            answer + "\n\nCitations:\n" + "\n".join(citations) if citations else answer
+        )
+
+        # Optionally summarize answer
+        summary = None
+        if summarize and answer:
+            summary_prompt = f"Summarize the following answer in 2 sentences:\n{answer}"
+            summary_resp = self.llm.invoke([summary_prompt])
+            summary = summary_resp.content
+
+        # Store query history
+        self.history.append(
+            {
+                "question": question,
+                "answer": answer,
+                "sources": sources,
+                "summary": summary,
+            }
+        )
+
+        return {
+            "question": question,
+            "answer": answer_with_citations,
+            "sources": sources,
+            "summary": summary,
+            "history": self.history,
+        }
+
+
 def main():
     # docs = process_all_pdfs("data")
     # chunks = split_docs(docs)
@@ -316,8 +481,41 @@ def main():
         vector_store=vectorstore, embedding_manager=embedding_manager
     )
 
-    query_embedding = rag_retriever.retrieve("What is single attention")
-    print(query_embedding)
+    # query_embedding = rag_retriever.retrieve("What is single attention")
+    # print(query_embedding)
+
+    llm = ChatGroq(
+        groq_api_key=groq_api_key,
+        model_name="llama-3.1-8b-instant",
+        temperature=0.1,
+        max_tokens=1024,
+    )
+
+    # answer = rag_simple("What is single attention?", rag_retriever, llm)
+    # result = rag_advanced(
+    #     "What is single attention?",
+    #     rag_retriever,
+    #     llm,
+    #     top_k=3,
+    #     min_score=0.1,
+    #     return_context=True,
+    # )
+    # print("Answer: ", result["answer"])
+    # print("Sources: ", result["sources"])
+    # print("Confidence: ", result["confidence"])
+    # print("Context Preview: ", result["context"][:300])
+
+    adv_rag = AdvancedRAGPipeline(rag_retriever, llm)
+    result = adv_rag.query(
+        "what is attention is all you need",
+        top_k=3,
+        min_score=0.1,
+        stream=True,
+        summarize=True,
+    )
+    print("\nFinal Answer:", result["answer"])
+    print("Summary:", result["summary"])
+    print("History:", result["history"][-1])
 
 
 if __name__ == "__main__":
