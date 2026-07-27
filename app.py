@@ -12,3 +12,4 @@ Deliverable:
 Langchain Series: https://youtube.com/playlist?list=PLKnIA16_RmvaTbihpo4MtzVm4XOQa0ER0&si=Mek3_-WOGqZMpu-t
 LLM Course — Build a Semantic Book Recommender (Python, OpenAI, LangChain, Gradio): https://youtu.be/Q7mS1VHm3Yw?si=ESi-Iy-CrzBCCzPL
 """
+
