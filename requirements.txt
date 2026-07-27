@@ -1,12 +1,32 @@
 langchain
 langchain-core
 langchain-community
+# PDF loaders
 pypdf
 pymupdf
+
+# Excel loader
 langchain_excel_loader
+# Text splitter
 langchain_text_splitters
+
 sentence-transformers
+
 faiss-cpu
 chromadb
 langchain-groq
 python-dotenv
+
+langchain-google-genai
+google-generativeai
+
+
+langchain-openai
+
+langchain-huggingface
+transformers
+huggingface-hub
+
+# Machine learning utilities
+numpy
+scikit-learn
