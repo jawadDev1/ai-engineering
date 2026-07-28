@@ -30,3 +30,6 @@ huggingface-hub
 # Machine learning utilities
 numpy
 scikit-learn
+
+# For creating UI
+streamlit
