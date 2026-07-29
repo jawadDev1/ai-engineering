@@ -23,3 +23,8 @@ with_structured_output function generates a prompt and sends it along with the u
 ### TypedDict
 
 TypedDict is a way to define a dictionary in python where you specify what keys and values should exist. It helps ensure that your dictionary follows a specific structure. If you know typescript it's similar to Interface or type
+
+### Pydantic
+
+Pydantic is a data validation and data parsing library for Python. It ensure the data you work with is correct, structured and type-safe.
+Pydantic also have some built-in types like EmailStr

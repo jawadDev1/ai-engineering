@@ -33,3 +33,6 @@ scikit-learn
 
 # For creating UI
 streamlit
+
+pydantic
+pydantic[email]
