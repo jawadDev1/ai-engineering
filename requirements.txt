@@ -1,6 +1,7 @@
 langchain
 langchain-core
 langchain-community
+langchain-experimental
 # PDF loaders
 pypdf
 pymupdf
@@ -36,3 +37,7 @@ streamlit
 
 pydantic
 pydantic[email]
+
+# For jupyter
+ipywidgets
+tqdm
