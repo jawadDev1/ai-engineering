@@ -41,3 +41,24 @@ A structured tool in LangChain is a special type of tool where the input to the 
 
 A toolkit is just a collection of related tools, that serves a common purpose.
 You can group related tools into a toolkit.
+
+## Tool Binding
+
+Tool binding is a step where you register tools with a Large Language Model so that:
+
+- LLM knows what tools are available.
+- It knows what each tool does.
+- It knows what input format to use (via schema).
+
+## Tool Calling
+
+Tool calling is the process where LLM decides, during a conversation or task, that it needs to use a specific tool and generates a structured output with:
+
+- the name of tool
+- the arguments to call it with
+
+The LLM does not actually run the tool, it just suggests the tool and the input arguments. The actual execution is handled by the langchain or us.
+
+## Tool Execution
+
+Tool execution is the step where the actual python function (tool) is run using the input arguments that the LLM suggested during tool calling.
