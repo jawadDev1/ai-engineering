@@ -1,8 +1,10 @@
 # Agentic AI with LangGraph
 
-| Title                                 | Description                                                                     |
-| ------------------------------------- | ------------------------------------------------------------------------------- |
-| [Simple Workflows](./simple_worflows) | BMI Calculator, LLM calling and LLM chaining workflows using graph nodes edges. |
+| Title                                           | Description                                                                     |
+| ----------------------------------------------- | ------------------------------------------------------------------------------- |
+| [Simple Workflows](./simple_worflows)           | BMI Calculator, LLM calling and LLM chaining workflows using graph nodes edges. |
+| [Parallel Workflows](./parallel_workflow)       | Essay evaluation workflow .                                                     |
+| [Conditional Workflows](./conditional_workflow) | Quadratic equation workflow .                                                   |
 
 ## Generative AI
 
