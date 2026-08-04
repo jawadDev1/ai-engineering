@@ -53,3 +53,31 @@ An Agent has mainly 5 components:
 - Tools
 - Memory
 - Supervisor
+
+## Langgraph
+
+Langgraph is an orchestration framework that enables you to build stateful, multi-step and event driven workflows using LLMs. It's ideal for designing both single agent and multi-agent agentic AI applications.
+
+Workflow is a series of tasks that you execute in order to achieve a goal. Now LLM workflow is a workflow where the series of tasks depends on the LLM.
+
+### Graph, Nodes, Edges
+
+In simple terms Nodes are python functions and edges a link that connect one node to another. An Edge tells the orchestrator to what node to execute after current node.
+
+### State
+
+State handles the main and critical info that llm needs to remember. State is global and it is accessible by all the nodes and it is muteable. State keeps evolving through out the cycle of graph.
+
+### Reducers
+
+Reducers in langgraph define how updates from nodes are applied to the shared state.
+Each key in the state can have it's own reducer, which determines weather new data replaces, merges or adds to the existing value.
+
+### Langgraph Execution Model
+
+1. Graph Defination - you define the state schema, node and edges
+2. Compilation - This checks the graph structure and prepare it for execution
+3. Invocation - run the graph with _.invoke(initial_state)_
+4. Super-Steps Begin - Execution proceeds in rounds
+5. Message Passing & Node Activation - The message are passed to downstream nodes via edges
+6. Halting Condition - Execution stops when no nodes are active and no messages are in transit
