@@ -1,5 +1,9 @@
 # Agentic AI with LangGraph
 
+| Title                                 | Description                                                                     |
+| ------------------------------------- | ------------------------------------------------------------------------------- |
+| [Simple Workflows](./simple_worflows) | BMI Calculator, LLM calling and LLM chaining workflows using graph nodes edges. |
+
 ## Generative AI
 
 Generative AI refers to the class of AI models which can generate content, such as text, images, video etc, that resembles human created content.
