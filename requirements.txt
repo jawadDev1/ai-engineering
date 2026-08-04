@@ -6,6 +6,9 @@ langchain-experimental
 pypdf
 pymupdf
 
+# Langgraph
+langgraph
+
 # Excel loader
 langchain_excel_loader
 # Text splitter
