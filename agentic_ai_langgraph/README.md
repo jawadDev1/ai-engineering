@@ -4,7 +4,7 @@
 | ----------------------------------------------- | ------------------------------------------------------------------------------- |
 | [Simple Workflows](./simple_worflows)           | BMI Calculator, LLM calling and LLM chaining workflows using graph nodes edges. |
 | [Parallel Workflows](./parallel_workflow)       | Essay evaluation workflow .                                                     |
-| [Conditional Workflows](./conditional_workflow) | Quadratic equation workflow .                                                   |
+| [Conditional Workflows](./conditional_workflow) | Review Diagnosis reply workflow, Quadratic equation workflow .                  |
 
 ## Generative AI
 
