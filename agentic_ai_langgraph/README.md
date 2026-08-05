@@ -88,3 +88,8 @@ Each key in the state can have it's own reducer, which determines weather new da
 4. Super-Steps Begin - Execution proceeds in rounds
 5. Message Passing & Node Activation - The message are passed to downstream nodes via edges
 6. Halting Condition - Execution stops when no nodes are active and no messages are in transit
+
+## Presistence
+
+Presistence in langgraph refers to the ability to store and restore the state of a workflow over time. We have checkpointers in presistence. Each super step becomes a checkpointer. Checkpointer saves the state at different checkpoints in graph.
+Each workflow has a unique thread_id which helps us in identifying different interacton with workflow.
