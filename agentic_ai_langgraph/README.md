@@ -93,3 +93,7 @@ Each key in the state can have it's own reducer, which determines weather new da
 
 Presistence in langgraph refers to the ability to store and restore the state of a workflow over time. We have checkpointers in presistence. Each super step becomes a checkpointer. Checkpointer saves the state at different checkpoints in graph.
 Each workflow has a unique thread_id which helps us in identifying different interacton with workflow.
+
+## Streaming
+
+In LLMs, streaming means the model starts sending tokens (words) as soon as they're generated, instead of waiting for the entire response to be ready before returning it.

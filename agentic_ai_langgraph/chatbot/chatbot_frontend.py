@@ -1,10 +1,70 @@
 import streamlit as st
 from chatbot_backend import chatbot
 from langchain_core.messages import HumanMessage
+import uuid
 
-CONFIG = {'configurable': {"thread_id": 1}}
+
+
+# ************ || utility functions || ************
+def generate_thread_id():
+   return uuid.uuid4()
+
 if 'message_history' not in st.session_state:
     st.session_state['message_history'] = [] 
+
+if 'thread_id' not in st.session_state:
+    st.session_state['thread_id'] = generate_thread_id()
+
+
+CONFIG = {'configurable': {"thread_id": st.session_state['thread_id']}}
+
+def add_thread(thread_id):
+    if thread_id not in st.session_state['chat_threads']:
+        st.session_state['chat_threads'].append(thread_id)
+
+def load_conversation(thread_id):
+    state = chatbot.get_state(config={'configurable': {'thread_id': thread_id}})
+    return state.values.get('messages', [])
+
+
+# ************ || Sidebar || ************
+
+def reset_chat():
+    st.session_state['thread_id'] = generate_thread_id()
+    add_thread(st.session_state['thread_id'])
+    st.session_state['message_history'] = []
+
+if 'chat_threads' not in st.session_state:
+    st.session_state['chat_threads'] = []
+
+add_thread(st.session_state['thread_id'] )
+
+st.sidebar.title("Luffy Chatbot")
+
+if st.sidebar.button("New Chat"):
+    reset_chat()
+
+
+st.sidebar.header("My Conversations")
+
+for thread_id in st.session_state['chat_threads'][::-1]:
+    if st.sidebar.button(str(thread_id)):
+        st.session_state['thread_id'] = thread_id
+        messages = load_conversation(thread_id)
+
+        temp_messages = []
+
+        for message in messages:
+            
+            if isinstance(message, HumanMessage):
+                role = 'user'
+            else:
+                role = "assistant"
+
+            temp_messages.append({"role": role, "content": message.content})
+        st.session_state['message_history'] = temp_messages
+
+# ************ Chatbot ***********************************
 
 
 for message in st.session_state['message_history']:
@@ -26,14 +86,17 @@ if user_input:
 
     
 
-    res = chatbot.invoke({
-            "messages": [HumanMessage(content=user_input)]
-    }, config=CONFIG)
-    ai_message = res['messages'][-1].content
+    with st.chat_message('assistant'):
+        ai_message = st.write_stream(
+            message_chunk.content for message_chunk, metadata in chatbot.stream(
+                {"messages": [HumanMessage(content=user_input)]}, 
+                stream_mode='messages',
+                config=CONFIG
+            )
+        )
 
+    
     st.session_state['message_history'].append({
             "role": "assistant",
             "content": ai_message
     })
-    with st.chat_message('assistant'):
-        st.text(ai_message)
