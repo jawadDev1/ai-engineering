@@ -6,6 +6,7 @@
 | [Parallel Workflows](./parallel_workflow)       | Essay evaluation workflow .                                                     |
 | [Conditional Workflows](./conditional_workflow) | Review Diagnosis reply workflow, Quadratic equation workflow .                  |
 | [Iterative Workflows](./iterative_workflow)     | Post generation workflow .                                                      |
+| [Chatbot](./chatbot)                            | Fully working chatbot with Sqlite, Tools, chat history, Streamlit               |
 
 ## Generative AI
 
@@ -97,3 +98,23 @@ Each workflow has a unique thread_id which helps us in identifying different int
 ## Streaming
 
 In LLMs, streaming means the model starts sending tokens (words) as soon as they're generated, instead of waiting for the entire response to be ready before returning it.
+
+## Human in the Loop (HITL)
+
+HITL is a design mechanism in AI systems, where a human actively participites at critical points of an AI workflow, either to suprervise, approve, correct or guide the AI output.
+
+HITL is like a human checkpoint inside an AI system, so the critical decisions are not made by LLM autonomously.
+
+HITL ensures
+
+- Accuracy - user can review before llm make an decision.
+- Safety
+- Ethical Alignment
+- Better user experience
+
+Common HITL Patterns:
+
+- Action Approval Pattern - Approve reject before execution
+- Output Review / Edit Pattern
+- Ambiguity Clarification Pattern - When LLM has any confusion, LLM ask questoin to human to clarify.
+- Escalation Pattern - When LLM can not handle a case, it can hand over to human.
