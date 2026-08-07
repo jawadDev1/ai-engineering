@@ -1,5 +1,5 @@
 import streamlit as st
-from chatbot_backend import chatbot
+from chatbot_backend import chatbot, get_all_threads
 from langchain_core.messages import HumanMessage
 import uuid
 
@@ -9,14 +9,6 @@ import uuid
 def generate_thread_id():
    return uuid.uuid4()
 
-if 'message_history' not in st.session_state:
-    st.session_state['message_history'] = [] 
-
-if 'thread_id' not in st.session_state:
-    st.session_state['thread_id'] = generate_thread_id()
-
-
-CONFIG = {'configurable': {"thread_id": st.session_state['thread_id']}}
 
 def add_thread(thread_id):
     if thread_id not in st.session_state['chat_threads']:
@@ -34,10 +26,7 @@ def reset_chat():
     add_thread(st.session_state['thread_id'])
     st.session_state['message_history'] = []
 
-if 'chat_threads' not in st.session_state:
-    st.session_state['chat_threads'] = []
 
-add_thread(st.session_state['thread_id'] )
 
 st.sidebar.title("Luffy Chatbot")
 
@@ -46,6 +35,23 @@ if st.sidebar.button("New Chat"):
 
 
 st.sidebar.header("My Conversations")
+
+
+# ************ || Session Setup || ************
+
+if 'message_history' not in st.session_state:
+    st.session_state['message_history'] = [] 
+
+
+if 'chat_threads' not in st.session_state:
+    st.session_state['chat_threads'] = get_all_threads()
+
+if 'thread_id' not in st.session_state:
+    st.session_state['thread_id'] = generate_thread_id()
+
+
+add_thread(st.session_state['thread_id'] )
+CONFIG = {'configurable': {"thread_id": st.session_state['thread_id']}}
 
 for thread_id in st.session_state['chat_threads'][::-1]:
     if st.sidebar.button(str(thread_id)):

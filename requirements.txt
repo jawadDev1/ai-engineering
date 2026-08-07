@@ -2,6 +2,7 @@ langchain
 langchain-core
 langchain-community
 langchain-experimental
+langgraph-checkpoint-sqlite
 # PDF loaders
 pypdf
 pymupdf
